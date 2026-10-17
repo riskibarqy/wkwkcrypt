@@ -1,0 +1,9 @@
+# Local agent-harness notes
+.barqyAgentFolder/
+
+# Local coverage reports
+coverage.out
+cover.out
+
+# OS metadata
+.DS_Store
