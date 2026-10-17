@@ -53,9 +53,10 @@ func TestKeyDecryptionRejectsWrongAADAndTampering(t *testing.T) {
 		t.Fatalf("DecryptWithKey() wrong AAD error = %v, want ErrAuthentication", err)
 	}
 
-	tampered := encoded[:len(encoded)-1] + "A"
-	if encoded[len(encoded)-1] == 'A' {
-		tampered = encoded[:len(encoded)-1] + "B"
+	// Change a non-final Base64 character so the encoding remains canonical.
+	tampered := encoded[:len(encoded)-2] + "A" + encoded[len(encoded)-1:]
+	if encoded[len(encoded)-2] == 'A' {
+		tampered = encoded[:len(encoded)-2] + "B" + encoded[len(encoded)-1:]
 	}
 	if _, err := DecryptWithKey(tampered, key); !errors.Is(err, ErrAuthentication) {
 		t.Fatalf("DecryptWithKey() tampered error = %v, want ErrAuthentication", err)
