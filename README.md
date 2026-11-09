@@ -23,7 +23,7 @@ import (
 	"crypto/rand"
 	"log"
 
-	"wkwkcrypt" // Replace with the published module path before release.
+	wkwkcrypt "github.com/riskibarqy/wkwkcrypt"
 )
 
 func main() {

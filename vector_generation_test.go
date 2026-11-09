@@ -7,10 +7,10 @@ import (
 	"os"
 	"testing"
 
-	internalcipher "wkwkcrypt/internal/cipher"
-	"wkwkcrypt/internal/codec"
-	"wkwkcrypt/internal/envelope"
-	"wkwkcrypt/internal/kdf"
+	internalcipher "github.com/riskibarqy/wkwkcrypt/internal/cipher"
+	"github.com/riskibarqy/wkwkcrypt/internal/codec"
+	"github.com/riskibarqy/wkwkcrypt/internal/envelope"
+	"github.com/riskibarqy/wkwkcrypt/internal/kdf"
 )
 
 type vectorSet struct {

@@ -2,21 +2,28 @@ package codec
 
 import (
 	"bytes"
+	"strings"
 	"testing"
 )
 
 func FuzzDecode(f *testing.F) {
 	f.Add(Prefix)
+	f.Add(Encode([]byte{0x00, 0xff}))
 	f.Add(Prefix + "AA")
 	f.Add(Prefix + "AA=")
 	f.Add("wkw1:words:alpha-beta")
+	f.Add(EncodeWords([]byte{0x00, 0xff}))
 
 	f.Fuzz(func(t *testing.T, encoded string) {
 		payload, err := Decode(encoded)
 		if err != nil {
 			return
 		}
-		if canonical := Encode(payload); canonical != encoded {
+		canonical := Encode(payload)
+		if strings.HasPrefix(encoded, WordsPrefix) {
+			canonical = EncodeWords(payload)
+		}
+		if canonical != encoded {
 			t.Fatalf("Decode(%q) accepted noncanonical value; canonical = %q", encoded, canonical)
 		}
 	})

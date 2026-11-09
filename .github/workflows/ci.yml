@@ -9,8 +9,12 @@ permissions:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v5
@@ -21,8 +25,9 @@ jobs:
       - run: go test -race ./...
       - run: go vet ./...
       - name: Fuzz parsers and codecs
+        if: runner.os == 'Linux'
         run: |
-          go test ./internal/codec -run=^$ -fuzz=FuzzDecode -fuzztime=3s
-          go test ./internal/codec -run=^$ -fuzz=FuzzEncodeDecodeWords -fuzztime=3s
-          go test ./internal/envelope -run=^$ -fuzz=FuzzParse -fuzztime=3s
-          go test . -run=^$ -fuzz=FuzzDecryptWithKey -fuzztime=3s
+          go test ./internal/codec -run=^$ -parallel=2 -fuzz=^FuzzDecode$ -fuzztime=30s
+          go test ./internal/codec -run=^$ -parallel=2 -fuzz=^FuzzEncodeDecodeWords$ -fuzztime=30s
+          go test ./internal/envelope -run=^$ -parallel=2 -fuzz=^FuzzParse$ -fuzztime=30s
+          go test . -run=^$ -parallel=2 -fuzz=^FuzzDecryptWithKey$ -fuzztime=30s

@@ -5,7 +5,7 @@ import (
 	"encoding/binary"
 	"strings"
 
-	"wkwkcrypt/internal/envelope"
+	"github.com/riskibarqy/wkwkcrypt/internal/envelope"
 )
 
 const bitsPerWord = 11

@@ -1,4 +1,4 @@
-module wkwkcrypt
+module github.com/riskibarqy/wkwkcrypt
 
 go 1.23.0
 
